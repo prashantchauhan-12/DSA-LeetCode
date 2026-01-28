@@ -14,7 +14,7 @@ public:
         if (breakp == -1) {
             reverse(nums.begin(), nums.end());
         } else {
-            for (int i = n - 1; i > breakp; i--) {
+            for (int i = n - 1; i >= breakp; i--) {
                 if (nums[i] > nums[breakp]) {
                     swap(nums[i], nums[breakp]);
                     break;
