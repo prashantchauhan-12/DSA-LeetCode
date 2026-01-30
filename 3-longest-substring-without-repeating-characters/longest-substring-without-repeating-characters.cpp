@@ -7,13 +7,11 @@ public:
         map<int, int> mp;
         int len = 0;
         while (right < n) {
-            mp[s[right]]++;
-
-            while (mp[s[right]] >= 2) {
-                mp[s[left]]--;
-                left++;
+            if (mp.find(s[right]) != mp.end()) {
+                left = max(left, mp[s[right]] + 1);
             }
 
+            mp[s[right]] = right;
             len = max(len, right - left + 1);
             right++;
         }
