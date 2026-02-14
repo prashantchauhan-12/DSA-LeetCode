@@ -1,46 +1,37 @@
 class Solution {
 public:
-    vector<int> dx = {-1, 1, 0, 0};
-    vector<int> dy = {0, 0, -1, 1};
-
-    int n, m;
-
-    bool dfs(int x, int y, int idx, vector<vector<char>>& board, string& word) {
-        if (idx == word.size()) {
+    vector<pair<int, int>> directions{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    bool DFS(vector<vector<char>>& board, int i, int j, string word,
+             int index) {
+        if (index == word.length())
             return true;
+        if (i < 0 || i >= board.size() || j < 0 || j >= board[i].size() ||
+            board[i][j] == '$' || board[i][j] != word[index]) {
+            return false;
         }
 
-        char temp = board[x][y];
-        board[x][y] = '#';
+        char ch = board[i][j];
+        board[i][j] = '$';
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (nx >= 0 && nx < m && ny >= 0 && ny < n &&
-                board[nx][ny] == word[idx]) {
-                if (dfs(nx, ny, idx + 1, board, word))
-                    return true;
-            }
+        for (auto dir : directions) {
+            int x = i + dir.first;
+            int y = j + dir.second;
+            if (DFS(board, x, y, word, index + 1))
+                return true;
         }
-
-        board[x][y] = temp;
+        board[i][j] = ch;
         return false;
     }
-
+    
     bool exist(vector<vector<char>>& board, string word) {
-        m = board.size();
-        n = board[0].size();
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == word[0]) {
-                    if (dfs(i, j, 1, board, word)) {
-                        return true;
-                    }
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board[i].size(); j++) {
+                if (board[i][j] == word[0] && DFS(board, i, j, word, 0)) {
+                    return true;
                 }
             }
         }
+
         return false;
     }
 };
