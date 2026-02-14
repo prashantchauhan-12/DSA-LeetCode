@@ -1,32 +1,37 @@
 class Solution {
 public:
     vector<int> findPeakGrid(vector<vector<int>>& mat) {
-        int rows = mat.size();
-        int cols = mat[0].size();
+        int n = mat.size();      // Rows
+        int m = mat[0].size();   // Columns
+        int low = 0, high = m - 1;
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                // Check neighbors
-                bool isPeak = true;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
 
-                // Check Top
-                if (i > 0 && mat[i][j] < mat[i - 1][j])
-                    isPeak = false;
-                // Check Bottom
-                if (i < rows - 1 && mat[i][j] < mat[i + 1][j])
-                    isPeak = false;
-                // Check Left
-                if (j > 0 && mat[i][j] < mat[i][j - 1])
-                    isPeak = false;
-                // Check Right
-                if (j < cols - 1 && mat[i][j] < mat[i][j + 1])
-                    isPeak = false;
-
-                if (isPeak) {
-                    return {i, j};
+            // 1. Find the index of the maximum element in the current column (mid)
+            int maxRow = 0;
+            for (int i = 0; i < n; i++) {
+                if (mat[i][mid] > mat[maxRow][mid]) {
+                    maxRow = i;
                 }
             }
+
+            // 2. Check left and right neighbors
+            // Treat out-of-bounds as -1
+            int leftNeighbor = (mid > 0) ? mat[maxRow][mid - 1] : -1;
+            int rightNeighbor = (mid < m - 1) ? mat[maxRow][mid + 1] : -1;
+
+            if (mat[maxRow][mid] > leftNeighbor && mat[maxRow][mid] > rightNeighbor) {
+                // Found a peak!
+                return {maxRow, mid};
+            } else if (rightNeighbor > mat[maxRow][mid]) {
+                // If the right neighbor is bigger, move right
+                low = mid + 1;
+            } else {
+                // Otherwise, move left
+                high = mid - 1;
+            }
         }
-        return {-1, -1}; // Should not reach here per problem constraints
+        return {-1, -1};
     }
 };
