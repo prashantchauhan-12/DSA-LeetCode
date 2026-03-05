@@ -1,24 +1,24 @@
 class Solution {
 public:
-    void f(int c, int k, vector<int>& curr, vector<vector<int>>& result,
-           int n) {
-        if (c > n) {
-            if (k == 0)
-                result.push_back(curr);
+    void f(int c, int k, vector<int>& curr, vector<vector<int>>& result, int n) {
+        if (k == 0) {
+            result.push_back(curr);
             return;
         }
+        
+        if (c > n) return;
 
-        // take
-        if (k > 0) {
-            curr.push_back(c);
-            f(c + 1, k - 1, curr, result, n);
-            curr.pop_back();
-        }
+        // Choice 1: Take the current number 'c'
+        curr.push_back(c);
+        f(c + 1, k - 1, curr, result, n);
+        
+        // Backtrack: Remove 'c' before making the next choice
+        curr.pop_back();
 
-        // nottake
+        // Choice 2: Don't take the current number 'c'
         f(c + 1, k, curr, result, n);
     }
-
+    
     vector<vector<int>> combine(int n, int k) {
         vector<vector<int>> result;
         vector<int> curr;
