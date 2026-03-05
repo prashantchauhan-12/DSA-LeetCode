@@ -1,28 +1,32 @@
 class Solution {
 public:
     int n;
-    int dp[201][1001];
-
-    int solve(int idx, int target, vector<int>& nums) {
-        if (target == 0) {
+    int t[1001][201];
+    
+    int solve(int idx, vector<int>& nums, int target) {
+        if(target == 0)
             return 1;
-        }
-
-        if (idx >= n || target < 0)
+        
+        if(idx >= n || target < 0)
             return 0;
-
-        if (dp[idx][target] != -1)
-            return dp[idx][target];
-
-        int take_idx = solve(0, target - nums[idx], nums);
-        int reject_idx = solve(idx + 1, target, nums);
-
-        return dp[idx][target] = take_idx + reject_idx;
+        
+        int result = 0;
+        
+        if(t[target][idx] != -1)
+            return t[target][idx];
+        
+        for(int i = idx; i<n; i++) {
+            int take_i   = solve(0, nums, target-nums[i]);
+            
+            result += take_i;
+        }
+        
+        return t[target][idx] = result;
     }
-
+    
     int combinationSum4(vector<int>& nums, int target) {
         n = nums.size();
-        memset(dp, -1, sizeof(dp));
-        return solve(0, target, nums);
+        memset(t, -1, sizeof(t));
+        return solve(0, nums, target);
     }
 };
