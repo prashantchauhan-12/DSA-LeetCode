@@ -10,20 +10,22 @@
  * right(right) {}
  * };
  */
+
 class Solution {
 public:
     int minDepth(TreeNode* root) {
-        if (root == NULL)
+        if (!root)
             return 0;
 
-        // if no left child
+        // If there is no left child, we must take the right path
         if (!root->left)
             return 1 + minDepth(root->right);
-        // if right child
+
+        // If there is no right child, we must take the left path
         if (!root->right)
             return 1 + minDepth(root->left);
 
-        // if both child present
-        return 1 + min(minDepth(root->right), minDepth(root->left));
+        // If both exist, take the minimum of the two
+        return 1 + min(minDepth(root->left), minDepth(root->right));
     }
 };
