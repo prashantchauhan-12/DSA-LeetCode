@@ -23,9 +23,10 @@ public:
         if (root == NULL)
             return true;
 
-        if (abs(getHeight(root->left) - getHeight(root->right)) > 1)
-            return false;
+        int lh = getHeight(root->left);
+        int rh = getHeight(root->right);
 
-        return isBalanced(root->left) && isBalanced(root->right);
+        return abs(lh - rh) <= 1 && isBalanced(root->left) &&
+               isBalanced(root->right);
     }
 };
