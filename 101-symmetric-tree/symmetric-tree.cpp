@@ -1,33 +1,27 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
- * };
- */
 class Solution {
 public:
-    bool util(TreeNode* root1, TreeNode* root2) {
-        if (root1 == NULL || root2 == NULL) {
-            return root1 == root2;
-        }
+    bool isMirror(TreeNode* left, TreeNode* right) {
+        // Case 1: both null → symmetric
+        if (left == NULL && right == NULL)
+            return true;
 
-        if (root1->val != root2->val) {
+        // Case 2: one null → not symmetric
+        if (left == NULL || right == NULL)
             return false;
-        }
-        return util(root1->left, root2->right) &&
-               util(root1->right, root2->left);
+
+        // Case 3: values must match
+        if (left->val != right->val)
+            return false;
+
+        // Case 4: check mirror structure
+        return isMirror(left->left, right->right) &&
+               isMirror(left->right, right->left);
     }
 
     bool isSymmetric(TreeNode* root) {
         if (root == NULL)
             return true;
 
-        return util(root->left, root->right);
+        return isMirror(root->left, root->right);
     }
 };
