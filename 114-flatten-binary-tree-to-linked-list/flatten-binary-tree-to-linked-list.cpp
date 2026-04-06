@@ -12,27 +12,33 @@
  */
 
 class Solution {
-    // Standard pointer to keep track of the node processed last
-    TreeNode* prev = NULL;
-
 public:
     void flatten(TreeNode* root) {
         if (root == NULL)
             return;
 
-        // Step 1: Traverse the Right subtree first
-        flatten(root->right);
+        stack<TreeNode*> st;
+        st.push(root);
 
-        // Step 2: Traverse the Left subtree
-        flatten(root->left);
+        while (!st.empty()) {
+            TreeNode* cur = st.top();
+            st.pop();
 
-        // Step 3: Process the Root
-        // Set the right to the previously flattened head
-        root->right = prev;
-        // Set left to NULL as per linked list requirement
-        root->left = NULL;
+            // Push right child first so it stays at the bottom
+            if (cur->right)
+                st.push(cur->right);
+            // Push left child second so it is processed next
+            if (cur->left)
+                st.push(cur->left);
 
-        // Update prev to the current root for the next recursive call
-        prev = root;
+            // Re-assign pointers
+            if (!st.empty()) {
+                // The current node's right should point to the next node in
+                // Pre-order
+                cur->right = st.top();
+            }
+            // Always set the left child to NULL
+            cur->left = NULL;
+        }
     }
 };
