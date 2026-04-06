@@ -10,25 +10,29 @@
  * right(right) {}
  * };
  */
+
 class Solution {
+    // Standard pointer to keep track of the node processed last
+    TreeNode* prev = NULL;
+
 public:
     void flatten(TreeNode* root) {
-        TreeNode* cur = root;
-        while (cur) {
-            if (cur->left) {
-                TreeNode* prev = cur->left;
-                // Find the rightmost node in the left subtree
-                while (prev->right) {
-                    prev = prev->right;
-                }
-                // Connect the rightmost node to the current right subtree
-                prev->right = cur->right;
-                // Move left subtree to the right
-                cur->right = cur->left;
-                cur->left = NULL;
-            }
-            // Move to the next node in the flattened list
-            cur = cur->right;
-        }
+        if (root == NULL)
+            return;
+
+        // Step 1: Traverse the Right subtree first
+        flatten(root->right);
+
+        // Step 2: Traverse the Left subtree
+        flatten(root->left);
+
+        // Step 3: Process the Root
+        // Set the right to the previously flattened head
+        root->right = prev;
+        // Set left to NULL as per linked list requirement
+        root->left = NULL;
+
+        // Update prev to the current root for the next recursive call
+        prev = root;
     }
 };
