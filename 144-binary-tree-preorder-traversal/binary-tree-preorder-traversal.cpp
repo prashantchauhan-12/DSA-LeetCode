@@ -1,37 +1,37 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
- * };
- */
+
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> ans;
-        if (root == NULL)
-            return {};
+        vector<int> preorder;
+        TreeNode* cur = root;
 
-        stack<TreeNode*> st;
-        st.push(root);
+        while (cur != NULL) {
+            if (cur->left == NULL) {
+                // If no left child, visit root and move right
+                preorder.push_back(cur->val);
+                cur = cur->right;
+            } else {
+                // Find the Inorder Predecessor
+                TreeNode* prev = cur->left;
+                while (prev->right != NULL && prev->right != cur) {
+                    prev = prev->right;
+                }
 
-        while (!st.empty()) {
-            TreeNode* node = st.top();
-            st.pop();
-
-            ans.push_back(node->val);
-
-            if (node->right)
-                st.push(node->right);
-            if (node->left)
-                st.push(node->left);
+                if (prev->right == NULL) {
+                    // CASE A: Create Thread
+                    prev->right = cur;
+                    // PREORDER: Visit the root BEFORE moving to the left
+                    // subtree
+                    preorder.push_back(cur->val);
+                    cur = cur->left;
+                } else {
+                    // CASE B: Break Thread
+                    prev->right = NULL;
+                    // Left subtree is already done, just move right
+                    cur = cur->right;
+                }
+            }
         }
-
-        return ans;
+        return preorder;
     }
 };
