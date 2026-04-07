@@ -12,22 +12,24 @@
  */
 class Solution {
 public:
-    bool check(TreeNode* root, int& currentSum, int targetSum) {
+    bool check(TreeNode* root, int& startSum, int targetSum) {
         if (root == NULL)
             return false;
 
-        currentSum += root->val;
-        if (root->left == NULL && root->right == NULL)
-            if (currentSum == targetSum)
+        startSum += root->val;
+
+        if (root->left == NULL && root->right == NULL) {
+            if (targetSum == startSum)
                 return true;
+        }
 
-        bool found = check(root->left, currentSum, targetSum) ||
-                     check(root->right, currentSum, targetSum);
+        bool found = check(root->left, startSum, targetSum) ||
+                     check(root->right, startSum, targetSum);
 
-        currentSum -= root->val;
+        startSum -= root->val;
+
         return found;
     }
-
     bool hasPathSum(TreeNode* root, int targetSum) {
         int startSum = 0;
         return check(root, startSum, targetSum);
