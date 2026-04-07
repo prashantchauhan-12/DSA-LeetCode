@@ -13,15 +13,17 @@
 class Solution {
 public:
     TreeNode* searchBST(TreeNode* root, int val) {
-        if (root == NULL)
-            return NULL;
-
-        if (root->val == val)
+        // Base Case: We hit a null node or found the value
+        if (root == NULL || root->val == val)
             return root;
-        else if (root->val > val) {
-            return searchBST(root->left, val);
-        } else {
-            return searchBST(root->right, val);
+
+        // If the target is smaller, search the left subtree
+        if (root->val > val) {
+            return searchBST(root->left, val); // Added 'return'
+        } 
+        // If the target is larger, search the right subtree
+        else {
+            return searchBST(root->right, val); // Added 'return'
         }
     }
 };
