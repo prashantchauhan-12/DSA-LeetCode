@@ -13,18 +13,22 @@
 class Solution {
 public:
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-
         int i = 0;
         return build(preorder, i, INT_MAX);
     }
+
     TreeNode* build(vector<int>& preorder, int& i, int bound) {
+        // If we run out of elements or the current element exceeds bound,
+        // return null
         if (i == preorder.size() || preorder[i] > bound)
             return NULL;
 
         TreeNode* root = new TreeNode(preorder[i++]);
 
+        // Left subtree's upper bound is current node's value
         root->left = build(preorder, i, root->val);
 
+        // Right subtree inherits the same upper bound as current node
         root->right = build(preorder, i, bound);
 
         return root;
