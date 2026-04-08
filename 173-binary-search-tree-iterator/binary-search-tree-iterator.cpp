@@ -25,7 +25,6 @@ public:
 
     bool hasNext() { return !myStack.empty(); }
 
-private:
     void pushAll(TreeNode* node) {
         while (node != NULL) {
             myStack.push(node);
