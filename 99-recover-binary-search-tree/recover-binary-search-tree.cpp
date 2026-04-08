@@ -21,7 +21,6 @@ public:
         first = middle = last = NULL;
         prev = new TreeNode(INT_MIN);
         inorder(root);
-
         if (first && last)
             swap(first->val, last->val);
         else if (first && middle)
@@ -35,7 +34,7 @@ private:
         inorder(root->left);
 
         // Business logic for violation
-        if ((root->val < prev->val)) {
+        if (prev != NULL && (root->val < prev->val)) {
             if (first == NULL) {
                 first = prev;
                 middle = root;
