@@ -1,14 +1,13 @@
+
+
 class Solution {
 public:
     int findKthLargest(vector<int>& nums, int k) {
-        priority_queue<int, vector<int>, greater<int>> minh;
+        // We want the element that would be at index (n - k) if sorted
+        int targetIndex = nums.size() - k;
 
-        for (int i : nums) {
-            minh.push(i);
-            if (minh.size() > k)
-                minh.pop();
-        }
+        nth_element(nums.begin(), nums.begin() + targetIndex, nums.end());
 
-        return minh.top();
+        return nums[targetIndex];
     }
 };
