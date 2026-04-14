@@ -18,16 +18,14 @@ public:
     Twitter() { timestamp = 0; }
 
     void postTweet(int userId, int tweetId) {
-        // Store tweet with global timestamp
         tweets[userId].push_back({timestamp++, tweetId});
     }
 
+    typedef pair<int, int> p;
     vector<int> getNewsFeed(int userId) {
         // Min-heap to keep track of the 10 most recent tweets
         // Stores: pair<timestamp, tweetId>
-        priority_queue<pair<int, int>, vector<pair<int, int>>,
-                       greater<pair<int, int>>>
-            pq;
+        priority_queue<p, vector<p>, greater<p>> pq;
 
         // 1. Get user's own tweets
         for (auto& t : tweets[userId]) {
