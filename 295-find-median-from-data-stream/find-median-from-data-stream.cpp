@@ -23,19 +23,11 @@ public:
 
     double findMedian() {
         if (left_max_heap.size() == right_min_heap.size()) {
-            // matlab even number of elements hue honge
-
+            // means even number of elements
             return (double)(left_max_heap.top() + right_min_heap.top()) / 2;
         }
 
-        // else hamare paas odd number of elemenes hue honge
+        // else odd number of elemenes
         return left_max_heap.top();
     }
 };
-
-/**
- * Your MedianFinder object will be instantiated and called as such:
- * MedianFinder* obj = new MedianFinder();
- * obj->addNum(num);
- * double param_2 = obj->findMedian();
- */
