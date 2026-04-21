@@ -35,33 +35,42 @@ class Solution {
 public:
     int minimumHammingDistance(vector<int>& source, vector<int>& target,
                                vector<vector<int>>& allowedSwaps) {
+
         int n = source.size();
         UnionFind uf(n);
-        for (auto allowedSwap : allowedSwaps) {
-            uf.unionSet(allowedSwap[0], allowedSwap[1]);
+
+        for (auto& e : allowedSwaps) {
+            uf.unionSet(e[0], e[1]);
         }
 
-        unordered_map<int, vector<int>> components;
+        // Group indices by component
+        unordered_map<int, vector<int>> comp;
         for (int i = 0; i < n; i++) {
-            components[uf.findSet(i)].push_back(i);
+            comp[uf.findSet(i)].push_back(i);
         }
 
         int ans = 0;
-        for (auto component : components) {
-            vector<int> indices = component.second;
-            unordered_map<int, int> mp;
+
+        for (auto& it : comp) {
+            auto& indices = it.second;
+
+            unordered_map<int, int> freq;
+
+            // Count source values
             for (int idx : indices) {
-                mp[source[idx]]++;
+                freq[source[idx]]++;
             }
 
+            // Match with target
             for (int idx : indices) {
-                if (mp[target[idx]] > 0) {
-                    mp[target[idx]]--;
+                if (freq[target[idx]] > 0) {
+                    freq[target[idx]]--;
                 } else {
                     ans++;
                 }
             }
         }
+
         return ans;
     }
 };
