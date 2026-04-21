@@ -3,7 +3,7 @@ public:
     vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
         int n = nums.size();
 
-        vector<pair<int, int>> vp;
+        vector<pair<int,int>> vp;
         for (int i = 0; i < n; i++) {
             vp.push_back({nums[i], i});
         }
